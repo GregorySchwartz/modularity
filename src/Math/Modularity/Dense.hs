@@ -5,9 +5,7 @@ Collects the functions pertaining to finding the Newman-Girvan modularity of an
 adjacency matrix.
 -}
 
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-
-module Math.Modularity
+module Math.Modularity.Dense
     ( getModularity
     , Q (..)
     ) where
@@ -19,8 +17,8 @@ import qualified Data.Vector.Storable as VS
 import qualified Numeric.LinearAlgebra as H
 
 -- Local
+import Math.Modularity.Types
 
-newtype Q            = Q { unQ :: Double } deriving (Eq, Ord, Read, Show, Num)
 type LabelVector     = H.Vector Double
 type AdjacencyMatrix = H.Matrix Double
 
