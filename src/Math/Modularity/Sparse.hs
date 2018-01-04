@@ -11,11 +11,12 @@ module Math.Modularity.Sparse
     ( getModularity
     , getBModularity
     , Q (..)
+    , testModularity
     ) where
 
 -- Remote
 import Data.Bool (bool)
-import Math.Clustering.Spectral.Sparse (B (..))
+import Math.Clustering.Spectral.Sparse (B (..), getB)
 import qualified Data.Sparse.Common as S
 import qualified Numeric.LinearAlgebra.Sparse as S
 import qualified Data.Vector as V
@@ -57,13 +58,13 @@ getModularity moduleVec mat = Q $ (1 / (2 * m)) * sumQ mat
 getBModularity :: LabelVector -> B -> Q
 getBModularity moduleVec (B b) = Q . sum . fmap inner $ [first, second]
   where
-    inner v = ((a v v / l) - (a v (ones n) / l)) ** 2
+    inner v = (a v v / l) - ((a v (ones n) / l) ** 2)
     first  = S.fromColsL [moduleVec]
     second = S.fromColsL
            . (:[])
            . S.sparsifySV
            . S.vr
-           . fmap (bool 1 0 . (> 0))
+           . fmap (bool 1 0 . (== 1))
            . S.toDenseListSV
            $ moduleVec
     l    = a (ones n) (ones n)
@@ -72,9 +73,26 @@ getBModularity moduleVec (B b) = Q . sum . fmap inner $ [first, second]
                   $ (S.transposeSM (partA oneL)) S.#~# (partA oneR)
                   )
                 - (sum oneL)
-    partA one = S.transposeSM b S.#~# one
+    partA one = (S.transposeSM b) S.#~# one
     n    = S.nrows b
 
 -- | Get a column vector of ones.
 ones :: Int -> S.SpMatrix Double
 ones n = S.fromColsL [S.onesSV n]
+
+-- | Set the diagonal of a sparse matrix to 0.
+setDiag0 :: S.SpMatrix Double -> S.SpMatrix Double
+setDiag0 mat = S.fromListSM (S.dimSM mat)
+             . fmap (\(!x, !y, !z) -> if x == y then (x, y, 0) else (x, y, z))
+             . S.toListSM
+             $ mat
+
+-- | Test whether getModularity BB^T is the same as getBModularity B.
+testModularity :: (Bool, Q, Q)
+testModularity = (modA == modB, modA, modB)
+  where
+    items = S.fromListDenseSV 4 ([1,1,0,0] :: [Double])
+    b     = getB $ S.fromListDenseSM 4 ([1,1,0,0,0,0,1,1] :: [Double])
+    a     = setDiag0 $ (unB b) S.#~# S.transposeSM (unB b)
+    modA  = getModularity items a
+    modB  = getBModularity items b
