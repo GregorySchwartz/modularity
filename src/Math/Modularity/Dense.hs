@@ -37,7 +37,7 @@ getModularity moduleVec mat = Q $ (1 / (2 * m)) * sumQ mat
          . H.toRows 
     inner v w x = x - ((k v * k w) / (2 * m))
     delta v w = ((s v * s w) + 1) / 2
-    m = (/ 2) . H.sumElements . H.step $ mat -- Symmetric matrix so divide by 2.
+    m = (/ 2) . H.sumElements $ mat -- Symmetric matrix so divide by 2.
     d = H.vector . fmap H.sumElements . H.toRows $ mat
     s = bool (-1) 1 . (== 0) . H.atIndex moduleVec
     k = H.atIndex d
