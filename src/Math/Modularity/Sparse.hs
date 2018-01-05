@@ -46,7 +46,7 @@ getModularity moduleVec mat = Q $ (1 / (2 * m)) * sumQ mat
          . S.toRowsL
     inner v w x = x - ((k v * k w) / (2 * m))
     delta v w = ((s v * s w) + 1) / 2
-    m = (/ 2) . sum . fmap (bool 0 1 . (> 0)) $ mat -- Symmetric matrix so divide by 2.
+    m = (/ 2) . sum $ mat -- Symmetric matrix so divide by 2.
     d = S.sparsifySV . S.vr . fmap sum . S.toRowsL $ mat
     s = bool (-1) 1 . (== 0) . flip S.lookupDenseSV moduleVec
     k = flip S.lookupDenseSV d
