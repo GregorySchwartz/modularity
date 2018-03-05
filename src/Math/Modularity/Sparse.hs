@@ -92,7 +92,7 @@ testModularity :: (Bool, Q, Q)
 testModularity = (modA == modB, modA, modB)
   where
     items = S.fromListDenseSV 4 ([1,1,0,0] :: [Double])
-    b     = getB $ S.fromListDenseSM 4 ([1,1,0,0,0,0,1,1] :: [Double])
+    b     = getB True $ S.fromListDenseSM 4 ([1,1,0,0,0,0,1,1] :: [Double])
     a     = setDiag0 $ (unB b) S.#~# S.transposeSM (unB b)
     modA  = getModularity items a
     modB  = getBModularity items b

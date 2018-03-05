@@ -1,5 +1,5 @@
 name:                modularity
-version:             0.2.0.1
+version:             0.2.0.2
 synopsis:            Find the modularity of a network.
 description:         Report Q, the Newman-Girvan modularity of an adjacency matrix.
 homepage:            http://github.com/GregorySchwartz/modularity#readme
