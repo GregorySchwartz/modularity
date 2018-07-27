@@ -19,7 +19,6 @@ module Math.Modularity.Eigen.Sparse
 import Data.Bool (bool)
 import Math.Clustering.Spectral.Eigen.FeatureMatrix (B (..), getB)
 import qualified Data.Eigen.SparseMatrix as S
-import qualified Data.Eigen.SparseMatrix.Utility as S
 import qualified Data.Vector.Storable as VS
 
 -- Local
@@ -40,9 +39,9 @@ getModularity moduleVec mat = Q $ (1 / (2 * m)) * sumQ mat
     inner v w x = x - ((k v * k w) / (2 * m))
     delta v w = ((s v * s w) + 1) / 2
     m = (/ 2) . S.getSum $ mat -- Symmetric matrix so divide by 2.
-    d = S.getRowSums mat
-    s = bool (-1) 1 . (== 0) . (S.!) moduleVec . (0,)
-    k = (S.!) d . (,0)
+    d = S.getColSums mat
+    s = bool (-1) 1 . (== 0) . (S.!) moduleVec . (,0)
+    k = (S.!) d . (0,)
 
 -- | Find modularity from a vector of community labels (0 or 1) corresponding to
 -- rows in the normalized matrix B. See Shu et al., "Efficient Spectral
@@ -52,8 +51,8 @@ getBModularity :: LabelVector -> B -> Q
 getBModularity moduleVec (B b) = Q . sum . fmap inner $ [first, second]
   where
     inner v = (a v v / l) - ((a v (S.ones n) / l) ** 2)
-    first  = S.transpose moduleVec
-    second = S.transpose . S._map (bool 1 0 . (== 1)) $ moduleVec
+    first  = moduleVec
+    second = S._map (bool 1 0 . (== 1)) $ moduleVec
     l    = a (S.ones n) (S.ones n)
     a :: S.SparseMatrixXd -> S.SparseMatrixXd -> Double
     a oneL oneR = ( flip (S.!) (0, 0)
@@ -71,7 +70,7 @@ setDiag0 = S._imap (\x y z -> if x == y then 0 else z)
 testModularity :: (Bool, Q, Q)
 testModularity = (modA == modB, modA, modB)
   where
-    items = S.fromDenseList ([[1,1,0,0]] :: [[Double]])
+    items = S.fromDenseList (fmap (:[]) [1,1,0,0] :: [[Double]])
     b     = getB True $ S.fromDenseList ([[1,1],[0,0],[0,0],[1,1]] :: [[Double]])
     a     = setDiag0 $ (unB b) * S.transpose (unB b)
     modA  = getModularity items a

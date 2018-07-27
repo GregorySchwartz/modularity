@@ -34,7 +34,7 @@ getModularity moduleVec mat = Q $ (1 / (2 * m)) * sumQ mat
                    . VS.imap (\w x -> inner v w x * delta v w)
                   )
          . V.fromList
-         . H.toRows 
+         . H.toRows
     inner v w x = x - ((k v * k w) / (2 * m))
     delta v w = ((s v * s w) + 1) / 2
     m = (/ 2) . H.sumElements $ mat -- Symmetric matrix so divide by 2.
