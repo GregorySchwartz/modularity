@@ -52,7 +52,10 @@ getBModularity moduleVec (B b) = Q . sum . fmap inner $ [first, second]
   where
     inner v = (a v v / l) - ((a v (S.ones n) / l) ** 2)
     first  = moduleVec
-    second = S._map (bool 1 0 . (== 1)) $ moduleVec
+    second = S.fromDenseList
+           . (fmap . fmap) (bool 1 0 . (== 1))
+           . S.toDenseList
+           $ moduleVec
     l    = a (S.ones n) (S.ones n)
     a :: S.SparseMatrixXd -> S.SparseMatrixXd -> Double
     a oneL oneR = ( flip (S.!) (0, 0)
