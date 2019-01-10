@@ -1,6 +1,8 @@
 #+TITLE: modularity
 #+AUTHOR: Gregory W. Schwartz
 
+See [[https://github.com/GregorySchwartz/modularity]] for the latest version.
+
 * Description
 
 =modularity= is a Haskell library for computing Newman-Girvan modularity in
