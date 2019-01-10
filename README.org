@@ -7,4 +7,4 @@ See [[https://github.com/GregorySchwartz/modularity]] for the latest version.
 
 =modularity= is a Haskell library for computing Newman-Girvan modularity in
 dense and sparse matrices. Check the [[https://hackage.haskell.org/package/modularity][documentation]] for information on each
-function.
+function. Relies on =eigen-3.3.4.1= right now.
