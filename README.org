@@ -1,0 +1,8 @@
+#+TITLE: modularity
+#+AUTHOR: Gregory W. Schwartz
+
+* Description
+
+=modularity= is a Haskell library for computing Newman-Girvan modularity in
+dense and sparse matrices. Check the [[https://hackage.haskell.org/package/modularity][documentation]] for documentation on each
+function.
