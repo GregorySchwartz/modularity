@@ -1,5 +1,5 @@
 name:                modularity
-version:             0.2.0.4
+version:             0.2.1.0
 synopsis:            Find the modularity of a network.
 description:         Report Q, the Newman-Girvan modularity of an adjacency matrix.
 homepage:            http://github.com/GregorySchwartz/modularity#readme
@@ -7,7 +7,7 @@ license:             GPL-3
 license-file:        LICENSE
 author:              Gregory W. Schwartz
 maintainer:          gsch@pennmedicine.upenn.edu
-copyright:           2018 Gregory W. Schwartz
+copyright:           2019 Gregory W. Schwartz
 category:            Bioinformatics
 build-type:          Simple
 -- extra-source-files:
