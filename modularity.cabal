@@ -1,5 +1,5 @@
 name:                modularity
-version:             0.2.1.0
+version:             0.2.1.1
 synopsis:            Find the modularity of a network.
 description:         Report Q, the Newman-Girvan modularity of an adjacency matrix.
 homepage:            http://github.com/GregorySchwartz/modularity#readme
@@ -18,9 +18,9 @@ library
   exposed-modules:     Math.Modularity.Dense
                      , Math.Modularity.Sparse
                      , Math.Modularity.Types
-                     , Math.Modularity.Eigen.Sparse
+                     -- , Math.Modularity.Eigen.Sparse
   build-depends:       base >= 4.7 && < 5
-                     , eigen == 3.3.4.1
+                     -- , eigen == 3.3.4.1
                      , hmatrix
                      , sparse-linear-algebra
                      , spectral-clustering
